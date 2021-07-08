@@ -1,1 +1,3 @@
-rootProject.name = 'multi-api'
+rootProject.name = 'multi'
+include 'core'
+include 'api'

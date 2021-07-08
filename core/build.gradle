@@ -1,0 +1,23 @@
+plugins {
+	id 'java'
+	id 'idea'
+}
+
+group = 'com.sandon'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_16
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compileOnly 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+}
