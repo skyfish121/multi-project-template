@@ -1,0 +1,47 @@
+plugins {
+	id 'org.springframework.boot' version '2.5.2'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+	id 'idea'
+}
+
+group = 'com.sandon.generator'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = JavaVersion.VERSION_16
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+}
+
+test {
+	useJUnitPlatform()
+}
+
+configurations {
+	domaGenRuntime
+}
+
+dependencies {
+	def domaGenVersion = "2.28.0"
+	domaGenRuntime('org.postgresql:postgresql')
+	domaGenRuntime("org.seasar.doma:doma-gen:${domaGenVersion}")
+}
+
+task gen << {
+	ant.taskdef(resource: 'domagentask.properties',
+			classpath: configurations.domaGenRuntime.asPath)
+	ant.gen(url: 'jdbc:postgresql://localhost:15432/postgres', user:'postgres', password:'postgres') {
+		entityConfig()
+		daoConfig()
+		sqlConfig()
+	}
+}

@@ -1,6 +1,6 @@
 package com.sandon.multi.api.controllers.forms;
 
-import com.sandon.multi.api.domain.Dummy;
+import com.sandon.multi.api.repository.Dummy;
 import lombok.Value;
 
 @Value

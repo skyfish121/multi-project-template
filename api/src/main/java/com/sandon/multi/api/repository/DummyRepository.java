@@ -1,4 +1,4 @@
-package com.sandon.multi.api.domain;
+package com.sandon.multi.api.repository;
 
 import java.util.List;
 

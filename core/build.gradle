@@ -1,11 +1,25 @@
+// 詰まったポイント
+// org.springframework.bootを単純に指定すると、springのboot機能用の処理を持たないcoreでは、
+// bootJarでコンパイルエラーになる。だけど、dependency-managementでBOMの参照はしたいって時に
+// apply falseを指定し、「プラグインを現在のプロジェクトに適用しない」ようにした上で、
+// dependencyManagementのimportsを使って、BOM_COORDINATESだけ参照する。
+// これでspringを使わないプロジェクトでも、同じBOMを参照できる。
 plugins {
+	id 'org.springframework.boot' version '2.5.2' apply false
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'idea'
 }
 
-group = 'com.sandon'
+group = 'com.sandon.multi'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_16
+
+dependencyManagement {
+	imports {
+		mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
+	}
+}
 
 configurations {
 	compileOnly {
@@ -17,7 +31,41 @@ repositories {
 	mavenCentral()
 }
 
+def jdbcDriver = "org.postgresql:postgresql"
+def domaVersion = "2.28.0"
+
 dependencies {
-	compileOnly 'org.projectlombok:lombok:1.18.20'
-	annotationProcessor 'org.projectlombok:lombok:1.18.20'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	implementation("org.seasar.doma:doma:${domaVersion}")
+	implementation("${jdbcDriver}")
+}
+
+// ここから domaGen用の構文
+configurations {
+	domaGenRuntime
+}
+
+dependencies {
+	domaGenRuntime("org.seasar.doma:doma-gen:${domaVersion}")
+	domaGenRuntime('org.postgresql:postgresql')
+}
+
+task domaGen {
+	doLast {
+		def rootPackageName  = "${project.group}.db.base"
+		def dbUrl            = 'jdbc:postgresql://localhost:15432/postgres'
+		def dbUser           = 'postgres'
+		def dbPassword       = 'postgres'
+		def tableNamePattern = '.*'
+
+		// Dao インターフェース、Entity クラスを生成する
+		ant.taskdef(resource: 'domagentask.properties',
+				classpath: configurations.domaGenRuntime.asPath)
+		ant.gen(url: "${dbUrl}", user: "${dbUser}", password: "${dbPassword}", tableNamePattern: "${tableNamePattern}") {
+			entityConfig(packageName: "${rootPackageName}.entity", useListener: false)
+			daoConfig(packageName: "${rootPackageName}.dao")
+			sqlConfig()
+		}
+	}
 }

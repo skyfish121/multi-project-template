@@ -1,6 +1,6 @@
 package com.sandon.multi.api.controllers;
 
-import com.sandon.multi.api.domain.InvalidDummmyException;
+import com.sandon.multi.api.repository.InvalidDummmyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
