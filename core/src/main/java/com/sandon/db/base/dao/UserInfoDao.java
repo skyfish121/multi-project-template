@@ -1,6 +1,6 @@
 package com.sandon.db.base.dao;
 
-import com.sandon.db.base.entity.ReserveMng;
+import com.sandon.db.base.entity.UserInfo;
 import org.seasar.doma.Dao;
 import org.seasar.doma.Delete;
 import org.seasar.doma.Insert;
@@ -12,33 +12,33 @@ import org.seasar.doma.boot.ConfigAutowireable;
  */
 @ConfigAutowireable
 @Dao
-public interface ReserveMngDao {
+public interface UserInfoDao {
 
     /**
-     * @param orderReserveMngId
-     * @return the ReserveMng entity
+     * @param userId
+     * @return the UserInfo entity
      */
     @Select
-    ReserveMng selectById(Long orderReserveMngId);
+    UserInfo selectById(Long userId);
 
     /**
      * @param entity
      * @return affected rows
      */
     @Insert
-    int insert(ReserveMng entity);
+    int insert(UserInfo entity);
 
     /**
      * @param entity
      * @return affected rows
      */
     @Update
-    int update(ReserveMng entity);
+    int update(UserInfo entity);
 
     /**
      * @param entity
      * @return affected rows
      */
     @Delete
-    int delete(ReserveMng entity);
+    int delete(UserInfo entity);
 }

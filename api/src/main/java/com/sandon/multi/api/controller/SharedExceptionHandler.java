@@ -1,4 +1,4 @@
-package com.sandon.multi.api.controllers;
+package com.sandon.multi.api.controller;
 
 import com.sandon.multi.api.repository.InvalidDummmyException;
 import org.springframework.http.HttpStatus;

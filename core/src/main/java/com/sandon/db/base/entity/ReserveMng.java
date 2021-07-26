@@ -45,17 +45,25 @@ public class ReserveMng {
     @Column(name = "create_date")
     LocalDateTime createDate;
 
-    /** 作成者ID */
+    /** 作成ID */
     @Column(name = "create_id")
-    String createId;
+    Long createId;
+
+    /** 作成機能 */
+    @Column(name = "create_function")
+    String createFunction;
 
     /** 更新日時 */
     @Column(name = "update_date")
     LocalDateTime updateDate;
 
-    /** 更新者ID */
+    /** 更新ID */
     @Column(name = "update_id")
-    String updateId;
+    Long updateId;
+
+    /** 更新機能 */
+    @Column(name = "update_function")
+    String updateFunction;
 
     /** 
      * Returns the orderReserveMngId.
@@ -188,7 +196,7 @@ public class ReserveMng {
      * 
      * @return the createId
      */
-    public String getCreateId() {
+    public Long getCreateId() {
         return createId;
     }
 
@@ -197,8 +205,26 @@ public class ReserveMng {
      * 
      * @param createId the createId
      */
-    public void setCreateId(String createId) {
+    public void setCreateId(Long createId) {
         this.createId = createId;
+    }
+
+    /** 
+     * Returns the createFunction.
+     * 
+     * @return the createFunction
+     */
+    public String getCreateFunction() {
+        return createFunction;
+    }
+
+    /** 
+     * Sets the createFunction.
+     * 
+     * @param createFunction the createFunction
+     */
+    public void setCreateFunction(String createFunction) {
+        this.createFunction = createFunction;
     }
 
     /** 
@@ -224,7 +250,7 @@ public class ReserveMng {
      * 
      * @return the updateId
      */
-    public String getUpdateId() {
+    public Long getUpdateId() {
         return updateId;
     }
 
@@ -233,7 +259,25 @@ public class ReserveMng {
      * 
      * @param updateId the updateId
      */
-    public void setUpdateId(String updateId) {
+    public void setUpdateId(Long updateId) {
         this.updateId = updateId;
+    }
+
+    /** 
+     * Returns the updateFunction.
+     * 
+     * @return the updateFunction
+     */
+    public String getUpdateFunction() {
+        return updateFunction;
+    }
+
+    /** 
+     * Sets the updateFunction.
+     * 
+     * @param updateFunction the updateFunction
+     */
+    public void setUpdateFunction(String updateFunction) {
+        this.updateFunction = updateFunction;
     }
 }

@@ -11,7 +11,7 @@ plugins {
 	id 'idea'
 }
 
-group = 'com.sandon.multi'
+group = 'com.sandon'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = JavaVersion.VERSION_16
 
@@ -32,22 +32,26 @@ repositories {
 }
 
 def jdbcDriver = "org.postgresql:postgresql"
-def domaVersion = "2.28.0"
+def domaVersion = "2.47.1"
 
 dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
-	implementation("org.seasar.doma:doma:${domaVersion}")
+	implementation("org.seasar.doma.boot:doma-spring-boot-starter:1.5.0")
+	implementation("org.seasar.doma:doma-core:${domaVersion}")
+	annotationProcessor("org.seasar.doma:doma-processor:${domaVersion}")
 	implementation("${jdbcDriver}")
 }
 
+// *************************************************************************************************
 // ここから domaGen用の構文
+// *************************************************************************************************
 configurations {
 	domaGenRuntime
 }
 
 dependencies {
-	domaGenRuntime("org.seasar.doma:doma-gen:${domaVersion}")
+	domaGenRuntime("org.seasar.doma:doma-gen:2.28.0")
 	domaGenRuntime('org.postgresql:postgresql')
 }
 
@@ -62,10 +66,33 @@ task domaGen {
 		// Dao インターフェース、Entity クラスを生成する
 		ant.taskdef(resource: 'domagentask.properties',
 				classpath: configurations.domaGenRuntime.asPath)
-		ant.gen(url: "${dbUrl}", user: "${dbUser}", password: "${dbPassword}", tableNamePattern: "${tableNamePattern}") {
+		ant.gen(url: "${dbUrl}", user: "${dbUser}", password: "${dbPassword}", tableNamePattern: "${tableNamePattern}", templatePrimaryDir: "src/doma-gen/resources/template") {
 			entityConfig(packageName: "${rootPackageName}.entity", useListener: false)
 			daoConfig(packageName: "${rootPackageName}.dao")
 			sqlConfig()
 		}
 	}
+}
+
+// *************************************************************************************************
+// ここからdomaリソースコピー用設定
+// *************************************************************************************************
+task copyDomaResources(type: Sync)  {
+	println 'SQLファイルのコピー元'
+	println sourceSets.main.resources.srcDirs
+	from sourceSets.main.resources.srcDirs
+	println 'SQLファイルのコピー先'
+	println compileJava.destinationDir
+	into compileJava.destinationDir
+	include 'doma.compile.config'
+	include 'META-INF/**/*.sql'
+	include 'META-INF/**/*.script'
+}
+
+compileJava {
+	dependsOn copyDomaResources
+}
+
+jar {
+	duplicatesStrategy= DuplicatesStrategy.EXCLUDE
 }
