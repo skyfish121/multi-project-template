@@ -6,10 +6,15 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
   #Spring Security Reference URL <https://www.baeldung.com/spring-boot-security-autoconfiguration>
-  autoconfigure:
-    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
+#  autoconfigure:
+#    exclude: org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration
 
 # Doma2 Reference URL <https://github.com/domaframework/doma-spring-boot>
 doma:
   dialect: postgres
 
+# Logging
+logging:
+  level:
+    root: DEBUG
+    org.springframework: DEBUG

@@ -1,0 +1,8 @@
+version: '3'
+services:
+  # データベース（Keycloak用とDigitalKey用）
+  postgres:
+    build:
+      context: ./postgres
+    ports:
+      - 15432:5432

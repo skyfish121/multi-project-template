@@ -10,9 +10,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class SharedExceptionHandler extends ResponseEntityExceptionHandler {
 
-  @ExceptionHandler({
-      InvalidDummmyException.class
-  })
+  @ExceptionHandler({InvalidDummmyException.class})
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   public void handleBadRequestExceptions() {
   }
